@@ -1,0 +1,940 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suspense | CineVerse</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #080b0d;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(8, 11, 13, .96);
+            border-bottom: 1px solid rgba(212, 175, 55, .25);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #d4af37;
+        }
+
+        nav {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: .3s;
+        }
+
+        nav a:hover,
+        nav a.ativo {
+            color: #d4af37;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            padding: 120px 10% 70px;
+            display: flex;
+            align-items: center;
+            background:
+                linear-gradient(90deg, rgba(0, 0, 0, .92), rgba(0, 0, 0, .55), rgba(0, 0, 0, .85)),
+                url('../images/suspense-banner.jpg') center/cover no-repeat;
+        }
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+        .categoria {
+            color: #d4af37;
+            font-size: 15px;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(48px, 8vw, 100px);
+            line-height: 1;
+            margin-bottom: 25px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 650px;
+            color: #ddd;
+            margin-bottom: 35px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #b00000;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #080b0d;
+        }
+
+        /* SEÇÕES */
+        section {
+            padding: 90px 10%;
+        }
+
+        .titulo-secao {
+            font-family: 'Cinzel', serif;
+            color: #d4af37;
+            font-size: 38px;
+            margin-bottom: 18px;
+        }
+
+        .subtitulo {
+            color: #a7a7a7;
+            line-height: 1.8;
+            max-width: 850px;
+            margin-bottom: 45px;
+        }
+
+        /* HISTÓRIA */
+        .historia {
+            background: #0d1113;
+        }
+
+        .historia-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .historia img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, .5);
+        }
+
+        .historia-texto p {
+            color: #c5c5c5;
+            line-height: 1.9;
+            margin-bottom: 18px;
+        }
+
+        /* CARDS */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .info-card {
+            background: #111719;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, .06);
+            transition: .3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 175, 55, .5);
+        }
+
+        .numero {
+            color: #b00000;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .info-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .info-card p {
+            color: #a7a7a7;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            background: #0d1113;
+        }
+
+        .linha-tempo {
+            border-left: 2px solid #b00000;
+            padding-left: 35px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 35px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -42px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #d4af37;
+            border-radius: 50%;
+        }
+
+        .timeline-item h3 {
+            font-family: 'Cinzel', serif;
+            color: #d4af37;
+            margin-bottom: 8px;
+        }
+
+        .timeline-item p {
+            color: #a7a7a7;
+            line-height: 1.8;
+        }
+
+        /* FILMES */
+        .filmes {
+            background: #080b0d;
+        }
+
+        .cards-filmes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .filme-card {
+            background: #111719;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .06);
+            transition: .3s;
+        }
+
+        .filme-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 175, 55, .5);
+        }
+
+        .filme-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .filme-info {
+            padding: 20px;
+        }
+
+        .filme-info h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .filme-info p {
+            color: #a7a7a7;
+            font-size: 13px;
+        }
+
+        .nota {
+            color: #d4af37;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* MODERNOS */
+        .modernos {
+            background: #0d1113;
+        }
+
+        /* DIRETORES */
+        .diretores {
+            background: #080b0d;
+        }
+
+        .diretor-card {
+            background: #111719;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .06);
+            transition: .3s;
+            text-align: center;
+        }
+
+        .diretor-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 175, 55, .5);
+        }
+
+        .diretor-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .diretor-card div {
+            padding: 20px;
+        }
+
+        .diretor-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .diretor-card p {
+            color: #a7a7a7;
+            font-size: 13px;
+        }
+
+        /* TRAILER */
+        .trailer {
+            background: #0d1113;
+            text-align: center;
+        }
+
+        .trailer iframe {
+            width: 80%;
+            height: 450px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        /* CURIOSIDADES */
+        .curiosidades {
+            background: #080b0d;
+        }
+
+        /* FAQ */
+        .faq {
+            background: #0d1113;
+        }
+
+        .faq-item {
+            background: #111719;
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: 10px;
+            padding: 25px 30px;
+            margin-bottom: 15px;
+        }
+
+        .faq-item h3 {
+            font-family: 'Cinzel', serif;
+            color: #d4af37;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .faq-item p {
+            color: #a7a7a7;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #050708;
+            border-top: 1px solid rgba(212, 175, 55, .25);
+            padding: 60px 10%;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        footer h3 {
+            font-family: 'Cinzel', serif;
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+
+        footer p,
+        footer a {
+            color: #a7a7a7;
+            font-size: 13px;
+            line-height: 1.8;
+            text-decoration: none;
+        }
+
+        footer a {
+            display: block;
+            margin-bottom: 7px;
+            transition: .3s;
+        }
+
+        footer a:hover {
+            color: #d4af37;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 1100px) {
+            .grid-4,
+            .cards-filmes {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 2fr 1fr;
+            }
+
+            nav {
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            header {
+                height: auto;
+                min-height: 80px;
+                flex-direction: column;
+                justify-content: center;
+                padding: 15px 7%;
+                gap: 12px;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 150px 7% 80px;
+            }
+
+            .historia-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trailer iframe {
+                width: 100%;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            section {
+                padding: 70px 6%;
+            }
+
+            .grid-4,
+            .cards-filmes,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .titulo-secao {
+                font-size: 30px;
+            }
+
+            .filme-card img {
+                height: 400px;
+            }
+
+            .historia img {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">CINE<span>VERSE</span></div>
+
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="açao.html">Ação</a>
+            <a href="comedia.html">Comédia</a>
+            <a href="romance.html">Romance</a>
+            <a href="terror.html">Terror</a>
+            <a href="ficçao.html">Ficção</a>
+            <a href="suspense.html" class="ativo">Suspense</a>
+            <a href="drama.html">Drama</a>
+            <a href="crime.html">Crime</a>
+            <a href="aventura.html">Aventura</a>
+               <a href="lgbt.html" class="ativo">LGBTQIA+</a>
+           
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div class="hero-content">
+                <div class="categoria">GÊNERO CINEMATOGRÁFICO</div>
+
+                <h1>SUSPENSE</h1>
+
+                <p>
+                    Entre em histórias cheias de mistério, tensão e
+                    reviravoltas, onde cada detalhe pode esconder uma nova
+                    pista.
+                </p>
+
+                <a href="#filmes" class="btn">Explorar filmes</a>
+            </div>
+        </section>
+
+        <section class="historia">
+            <div class="historia-grid">
+
+                <img src="https://s2-techtudo.glbimg.com/_2AMiNI2Gr2JgdFZDxwaLq_hViM=/0x0:1521x949/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2023/M/I/0PnbIpRD2SL5cI0DuyRQ/02.jpg" alt="Cinema de suspense">
+
+                <div class="historia-texto">
+                    <h2 class="titulo-secao">A História do Suspense</h2>
+
+                    <p>
+                        O suspense é um gênero construído principalmente
+                        através da expectativa e da tensão. Suas histórias
+                        fazem o público esperar pelo que acontecerá a seguir.
+                    </p>
+
+                    <p>
+                        O gênero ganhou grande destaque no cinema através de
+                        histórias envolvendo mistérios, crimes, perseguições,
+                        segredos e personagens em situações perigosas.
+                    </p>
+
+                    <p>
+                        Com o passar dos anos, o suspense passou a se misturar
+                        com outros gêneros, como terror, drama, ação e crime,
+                        criando diferentes estilos de narrativa.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2 class="titulo-secao">Características</h2>
+
+            <p class="subtitulo">
+                Elementos responsáveis por manter o público atento e criar
+                expectativa durante uma história de suspense.
+            </p>
+
+            <div class="grid-4">
+
+                <div class="info-card">
+                    <div class="numero">01</div>
+                    <h3>Tensão</h3>
+                    <p>
+                        A narrativa cria situações que deixam o público
+                        esperando pelo próximo acontecimento.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="numero">02</div>
+                    <h3>Mistério</h3>
+                    <p>
+                        Informações são reveladas aos poucos para despertar
+                        curiosidade e fazer o público procurar respostas.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="numero">03</div>
+                    <h3>Reviravoltas</h3>
+                    <p>
+                        Mudanças inesperadas podem transformar completamente
+                        a compreensão da história.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="numero">04</div>
+                    <h3>Expectativa</h3>
+                    <p>
+                        O espectador é levado a imaginar diferentes
+                        possibilidades antes da revelação.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="timeline">
+            <h2 class="titulo-secao">Evolução do Suspense</h2>
+
+            <p class="subtitulo">
+                O suspense passou por diferentes fases e ganhou novas formas
+                de construir tensão ao longo da história do cinema.
+            </p>
+
+            <div class="linha-tempo">
+
+                <div class="timeline-item">
+                    <h3>1910 – 1930</h3>
+                    <p>
+                        As primeiras histórias exploravam perseguições,
+                        mistérios e situações perigosas.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>1940 – 1960</h3>
+                    <p>
+                        O suspense psicológico ganhou força com histórias
+                        envolvendo personagens complexos e mistérios.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>1970 – 1990</h3>
+                    <p>
+                        Crimes, investigações e perseguições passaram a ter
+                        grande destaque em produções do gênero.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>2000 – Hoje</h3>
+                    <p>
+                        Novas tecnologias e narrativas não lineares ampliaram
+                        as possibilidades das histórias de suspense.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="filmes" id="filmes">
+            <h2 class="titulo-secao">Clássicos do Suspense</h2>
+
+            <p class="subtitulo">
+                Obras que ajudaram a estabelecer algumas das principais
+                características do gênero.
+            </p>
+
+            <div class="cards-filmes">
+
+                <div class="filme-card">
+                    <img src="https://cinejardins.com.br/wp-content/uploads/2025/08/UM-CORPO-QUE-CAI-CARTAZ.png" alt="Um Corpo que Cai">
+                    <div class="filme-info">
+                        <h3>Um Corpo que Cai</h3>
+                        <p>Um clássico marcado por mistério, obsessão e tensão.</p>
+                        <div class="nota">★ 8.3</div>
+                    </div>
+                </div>
+
+                <div class="filme-card">
+                    <img src="https://lozengelis.wordpress.com/wp-content/uploads/2021/07/silencio-entreter-se.jpg" alt="O Silêncio dos Inocentes">
+                    <div class="filme-info">
+                        <h3>O Silêncio dos Inocentes</h3>
+                        <p>Investigação policial combinada com suspense psicológico.</p>
+                        <div class="nota">★ 8.6</div>
+                    </div>
+                </div>
+
+                <div class="filme-card">
+                    <img src="https://m.media-amazon.com/images/I/71ShGTVJy4L._AC_UF894,1000_QL80_.jpg" alt="Seven">
+                    <div class="filme-info">
+                        <h3>Seven</h3>
+                        <p>Uma investigação marcada por mistério e tensão.</p>
+                        <div class="nota">★ 8.6</div>
+                    </div>
+                </div>
+
+                <div class="filme-card">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMjEzOWVhMGMtYjdmYi00MTk1LWFhNjMtNDYzNjNlOGFmMDQ2XkEyXkFqcGc@._V1_.jpg" alt="O Sexto Sentido">
+                    <div class="filme-info">
+                        <h3>O Sexto Sentido</h3>
+                        <p>Uma história de suspense com elementos sobrenaturais.</p>
+                        <div class="nota">★ 8.2</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="modernos">
+            <h2 class="titulo-secao">Suspense Moderno</h2>
+
+            <p class="subtitulo">
+                Produções que utilizam novas abordagens para construir mistério,
+                tensão e grandes reviravoltas.
+            </p>
+
+            <div class="cards-filmes">
+
+                <div class="filme-card">
+                    <img src="https://cinema-em-cena.nyc3.cdn.digitaloceanspaces.com/reviews/63/54nI3vSKlPp42WhJmKVRdmMbkzl.jpg" alt="Garota Exemplar"> 
+                    <div class="filme-info">
+                        <h3>Garota Exemplar</h3>
+                        <p>Um desaparecimento cercado por segredos e suspeitas.</p>
+                        <div class="nota">★ 8.1</div>
+                    </div>
+                </div>
+
+                <div class="filme-card">
+                    <img src="https://www.papodecinema.com.br/wp-content/uploads/2012/04/20180529-download.webp" alt="Ilha do Medo">
+                    <div class="filme-info">
+                        <h3>Ilha do Medo</h3>
+                        <p>Um investigador enfrenta um mistério em uma ilha isolada.</p>
+                        <div class="nota">★ 8.2</div>
+                    </div>
+                </div>
+
+                <div class="filme-card">
+                    <img src="https://m.media-amazon.com/images/S/pv-target-images/e64deabace60f9e45c2eb2f52212c82d54cd7f370687076229fea69baf71cdc3.jpg" alt="Parasita">
+                    <div class="filme-info">
+                        <h3>Parasita</h3>
+                        <p>Drama e suspense se encontram em uma história cheia de mudanças.</p>
+                        <div class="nota">★ 8.5</div>
+                    </div>
+                </div>
+
+                <div class="filme-card">
+                    <img src="https://m.media-amazon.com/images/I/61RsJbAFxbS._AC_UF894,1000_QL80_.jpg" alt="Corra!">
+                    <div class="filme-info">
+                        <h3>Corra!</h3>
+                        <p>Uma visita aparentemente normal se transforma em uma experiência inquietante.</p>
+                        <div class="nota">★ 7.8</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="diretores">
+            <h2 class="titulo-secao">Diretores Importantes</h2>
+
+            <p class="subtitulo">
+                Grandes cineastas que ajudaram a desenvolver diferentes formas
+                de criar suspense no cinema.
+            </p>
+
+            <div class="grid-4">
+
+                <div class="diretor-card">
+                    <img src="https://images.mubicdn.net/images/cast_member/1163/cache-3-1337541407/image-w856.jpg" alt="Alfred Hitchcock">
+                    <div>
+                        <h3>Alfred Hitchcock</h3>
+                        <p>Um dos maiores nomes da história do suspense.</p>
+                    </div>
+                </div>
+
+                <div class="diretor-card">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMTc1NDkwMTQ2MF5BMl5BanBnXkFtZTcwMzY0ODkyMg@@._V1_.jpg" alt="David Fincher">
+                    <div>
+                        <h3>David Fincher</h3>
+                        <p>Conhecido por seus thrillers psicológicos e policiais.</p>
+                    </div>
+                </div>
+
+                <div class="diretor-card">
+                    <img src="https://cdn.britannica.com/37/255737-050-9BB3FEDA/Christopher-Nolan-Movie-film-director-Oppenheimer-UK-premiere-2023.jpg" alt="Christopher Nolan">
+                    <div>
+                        <h3>Christopher Nolan</h3>
+                        <p>Utiliza narrativas complexas e grandes reviravoltas.</p>
+                    </div>
+                </div>
+
+                <div class="diretor-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVwC6UcPht5qWGPr_fJQRYX_0PB_X1dWcBYfS5BxLFgLKLP9lvvohG_lPN&s=10" alt="M. Night Shyamalan">
+                    <div>
+                        <h3>M. Night Shyamalan</h3>
+                        <p>Conhecido por mistérios e reviravoltas surpreendentes.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="trailer">
+            <h2 class="titulo-secao">Trailer em Destaque</h2>
+
+            <p class="subtitulo">
+                Uma produção que representa o suspense moderno.
+            </p>
+
+            <iframe
+                src="https://www.youtube.com/embed/YKWx0_8YV6s"
+                title="Trailer de Ilha do Medo"
+                allowfullscreen>
+            </iframe>
+        </section>
+
+        <section class="curiosidades">
+            <h2 class="titulo-secao">Curiosidades</h2>
+
+            <p class="subtitulo">
+                Alguns elementos interessantes presentes nas produções
+                de suspense.
+            </p>
+
+            <div class="grid-4">
+
+                <div class="info-card">
+                    <div class="numero">01</div>
+                    <h3>Silêncio</h3>
+                    <p>
+                        O silêncio pode ser utilizado para aumentar a tensão
+                        antes de um acontecimento importante.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="numero">02</div>
+                    <h3>Trilha Sonora</h3>
+                    <p>
+                        A música ajuda a controlar o ritmo e a expectativa
+                        de uma cena.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="numero">03</div>
+                    <h3>Pistas</h3>
+                    <p>
+                        Pequenos detalhes podem funcionar como pistas para
+                        o público descobrir o mistério.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="numero">04</div>
+                    <h3>Reviravolta</h3>
+                    <p>
+                        Uma revelação inesperada pode mudar completamente
+                        a interpretação da história.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="faq">
+            <h2 class="titulo-secao">Perguntas Frequentes</h2>
+
+            <div class="faq-item">
+                <h3>Qual é a diferença entre suspense e terror?</h3>
+                <p>
+                    O suspense geralmente concentra-se na expectativa,
+                    mistério e tensão, enquanto o terror busca principalmente
+                    provocar medo.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>O suspense sempre possui um mistério?</h3>
+                <p>
+                    Não necessariamente. Uma história pode criar suspense
+                    através de perigo, perseguição, expectativa ou situações
+                    desconhecidas.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>O que é suspense psicológico?</h3>
+                <p>
+                    É uma vertente que utiliza conflitos mentais, dúvidas,
+                    paranoia e emoções dos personagens para construir tensão.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+
+            <div>
+                <h3>CINEVERSE</h3>
+                <p>
+                    Um espaço dedicado ao cinema, seus gêneros, histórias,
+                    personagens e grandes produções.
+                </p>
+            </div>
+
+            <div>
+                <h3>Gêneros</h3>
+                <a href="acao.html">Ação</a>
+                <a href="comedia.html">Comédia</a>
+                <a href="romance.html">Romance</a>
+                <a href="terror.html">Terror</a>
+            </div>
+
+            <div>
+                <h3>Explorar</h3>
+                <a href="ficcao.html">Ficção</a>
+                <a href="suspense.html">Suspense</a>
+                <a href="drama.html">Drama</a>
+                <a href="crime.html">Crime</a>
+            </div>
+
+            <div>
+                <h3>Principal</h3>
+                <a href="../index.html">Início</a>
+                <a href="aventura.html">Aventura</a>
+                <a href="#">Top Filmes</a>
+                <a href="#">Trailers</a>
+            </div>
+
+        </div>
+    </footer>
+
+</body>
+</html>
+
